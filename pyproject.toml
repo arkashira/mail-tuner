@@ -5,10 +5,7 @@ build-backend = "poetry.masonry.api"
 [tool.poetry]
 name = "mail-tuner"
 version = "1.0.0"
-description = ""
+description = "Mail Tuner"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-
-[tool.poetry.dev-dependencies]
-pytest = "^6.2.5"

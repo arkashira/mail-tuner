@@ -1,2 +1,2 @@
 # Mail Tuner
-Mail Tuner is a Python project that analyzes email configuration settings and provides recommendations for improvement.
+Mail Tuner is a diagnostic tool for email operations managers. It generates a diagnostic report for bounced emails, listing probable causes and remediation steps.
