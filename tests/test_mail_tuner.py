@@ -1,35 +1,22 @@
-import pytest
-from mail_tuner import generate_diagnostic_report, generate_pdf_report, view_report_in_ui
-from mail_tuner import BounceReason
+import unittest
+from src.mail_tuner import MailTuner, SupportResource
 
-def test_generate_diagnostic_report_spf():
-    bounce_reason = "SPF fail"
-    report = generate_diagnostic_report(bounce_reason)
-    assert report.probable_causes == [BounceReason.SPF_FAIL]
-    assert report.remediation_steps == ["Check SPF records: https://docs.example.com/spf"]
+class TestMailTuner(unittest.TestCase):
+    def test_get_support_resources(self):
+        mail_tuner = MailTuner()
+        resources = mail_tuner.get_support_resources()
+        self.assertEqual(len(resources), 3)
 
-def test_generate_diagnostic_report_dmarc():
-    bounce_reason = "DMARC policy"
-    report = generate_diagnostic_report(bounce_reason)
-    assert report.probable_causes == [BounceReason.DMARC_POLICY]
-    assert report.remediation_steps == ["Check DMARC policy: https://docs.example.com/dmarc"]
+    def test_get_support_resource(self):
+        mail_tuner = MailTuner()
+        resource = mail_tuner.get_support_resource("FAQs")
+        self.assertIsNotNone(resource)
+        self.assertEqual(resource.name, "FAQs")
 
-def test_generate_diagnostic_report_content_filter():
-    bounce_reason = "Content filter"
-    report = generate_diagnostic_report(bounce_reason)
-    assert report.probable_causes == [BounceReason.CONTENT_FILTER]
-    assert report.remediation_steps == ["Check content filter settings: https://docs.example.com/content-filter"]
+    def test_get_support_resource_not_found(self):
+        mail_tuner = MailTuner()
+        resource = mail_tuner.get_support_resource("Unknown")
+        self.assertIsNone(resource)
 
-def test_generate_pdf_report():
-    report = generate_diagnostic_report("SPF fail")
-    pdf_content = generate_pdf_report(report)
-    assert "Diagnostic Report:" in pdf_content
-    assert "- SPF fail" in pdf_content
-    assert "- Check SPF records: https://docs.example.com/spf" in pdf_content
-
-def test_view_report_in_ui():
-    report = generate_diagnostic_report("SPF fail")
-    ui_content = view_report_in_ui(report)
-    assert "Diagnostic Report:" in ui_content
-    assert "- SPF fail" in ui_content
-    assert "- Check SPF records: https://docs.example.com/spf" in ui_content
+if __name__ == "__main__":
+    unittest.main()
